@@ -421,7 +421,7 @@ void setup_lora() {
 
   float freq = Config.lora.frequencyTx;
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
-  logger.log(Config.lora.frequencyTx);
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
 
   /*
   * sync word and preamble according to observation of other LoRa Trackers
