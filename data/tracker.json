@@ -2,9 +2,9 @@
 	"debug": false,
 	"beacons": [
 		{
-			"callsign": "NOCALL-7",
+			"callsign": "DF3LX-7",
 			"path": "WIDE1-1",
-			"message": "LoRa Tracker",
+			"message": "T-Beam Supreme",
 			"timeout": 1,
 			"symbol": "[",
 			"overlay": "/",
@@ -26,8 +26,8 @@
 		"alt_message": true
 	},
 	"lora": {
-		"frequency_rx": 433775000,
-		"frequency_tx": 433775000,
+		"frequency_rx": 433.775,
+		"frequency_tx": 433.775000,
 		"power": 20,
 		"spreading_factor": 12,
 		"signal_bandwidth": 125000,
@@ -35,7 +35,7 @@
 	},
 	"ptt_output": {
 		"active": false,
-		"io_pin": 4,
+		"io_pin": 0,
 		"start_delay": 0,
 		"end_delay": 0,
 		"reverse": false

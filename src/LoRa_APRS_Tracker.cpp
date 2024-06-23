@@ -402,34 +402,23 @@ void load_config() {
 }
 
 void setup_lora() {
-  SX1262 radio1 = new Module(10, 2, 3, 9);
-  int state = radio1.begin();
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true);
-  }
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
-  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set LoRa pins!");
-  LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
 
-  long freq = Config.lora.frequencyTx;
+  float freq = Config.lora.frequencyTx;
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
-  if (!LoRa.begin(freq)) {
-    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "LoRa", "Starting LoRa failed!");
-    show_display("ERROR", "Starting LoRa failed!");
-    while (true) {
-    }
-  }
-  LoRa.setSpreadingFactor(Config.lora.spreadingFactor);
-  LoRa.setSignalBandwidth(Config.lora.signalBandwidth);
-  LoRa.setCodingRate4(Config.lora.codingRate4);
-  LoRa.enableCrc();
 
-  LoRa.setTxPower(Config.lora.power);
+  SX1262 radio1 = new Module(10, -1, 5, 1);
+  int state = radio1.begin(freq, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 20);
+  if (state == RADIOLIB_ERR_NONE) {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "init complete!");
+  } else {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "LoRa", "Starting LoRa failed!");
+    char cstr[16];
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "LoRa", itoa(state, cstr, 10));
+    while (true);
+  }
+
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "LoRa init done!");
   show_display("INFO", "LoRa init done!", 2000);
 }
