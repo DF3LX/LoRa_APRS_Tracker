@@ -410,9 +410,9 @@ void setup_lora() {
 
   SX1262 radio1 = new Module(10, -1, 5, 1);
   /*
-  * sync word and preamble resarch unsuccefull
+  * sync word and preamble according to observation of other LoRa Trackers
   */
-  int state = radio1.begin(freq, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 20);
+  int state = radio1.begin(freq, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 8);
   if (state == RADIOLIB_ERR_NONE) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "init complete!");
   } else {
