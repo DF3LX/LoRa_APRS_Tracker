@@ -30,7 +30,7 @@
 		"frequency_tx": 433.775,
 		"power": 20,
 		"spreading_factor": 12,
-		"signal_bandwidth": 125000,
+		"signal_bandwidth": 125,
 		"coding_rate4": 5
 	},
 	"ptt_output": {

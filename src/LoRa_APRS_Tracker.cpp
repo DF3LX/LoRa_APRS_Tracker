@@ -420,10 +420,12 @@ void setup_lora() {
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
 
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", Config.lora.frequencyTx);
+
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "bandwidth: %d", Config.lora.signalBandwidth);
   /*
   * sync word and preamble according to observation of other LoRa Trackers
   */
-  int state = radio1.begin(Config.lora.frequencyTx, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 8);
+  int state = radio1.begin(433.775, 125, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 8);
   if (state == RADIOLIB_ERR_NONE) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "init complete!");
   } else {
