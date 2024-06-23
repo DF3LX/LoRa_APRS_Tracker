@@ -309,7 +309,7 @@ void loop() {
       digitalWrite(Config.ptt.io_pin, Config.ptt.reverse ? LOW : HIGH);
       delay(Config.ptt.start_delay);
     }
-
+    //TODO rework to RadioLib with bundled data instead of multiple calls
     LoRa.beginPacket();
     // Header:
     LoRa.write('<');
