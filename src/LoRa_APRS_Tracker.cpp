@@ -51,6 +51,10 @@ String padding(unsigned int number, unsigned int width);
 static bool send_update          = true;
 static bool display_toggle_value = true;
 
+// RadioLib stuff
+
+SX1262 radio1 = new Module(10, -1, 5, 1);
+
 static void handle_tx_click() {
   send_update = true;
 }
@@ -310,14 +314,24 @@ void loop() {
       delay(Config.ptt.start_delay);
     }
     //TODO rework to RadioLib with bundled data instead of multiple calls
-    LoRa.beginPacket();
-    // Header:
-    LoRa.write('<');
-    LoRa.write(0xFF);
-    LoRa.write(0x01);
-    // APRS Data:
-    LoRa.write((const uint8_t *)data.c_str(), data.length());
-    LoRa.endPacket();
+     uint8_t payload[data.length() + 3];  // 3 Bytes für den Header
+    // Header in den Puffer schreiben
+    payload[0] = '<';
+    payload[1] = 0xFF;
+    payload[2] = 0x01;
+    // APRS-Daten in den Puffer kopieren
+    memcpy(payload + 3, data.c_str(), data.length());
+
+    radio1.transmit(payload, sizeof(payload)); 
+
+    // LoRa.beginPacket();
+    // // Header:
+    // LoRa.write('<');
+    // LoRa.write(0xFF);
+    // LoRa.write(0x01);
+    // // APRS Data:
+    // LoRa.write((const uint8_t *)data.c_str(), data.length());
+    // LoRa.endPacket();
 
     if (BeaconMan.getCurrentBeaconConfig()->smart_beacon.active) {
       lastTxLat       = gps.location.lat();
@@ -407,12 +421,12 @@ void setup_lora() {
 
   float freq = Config.lora.frequencyTx;
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
+  logger.log(Config.lora.frequencyTx);
 
-  SX1262 radio1 = new Module(10, -1, 5, 1);
   /*
   * sync word and preamble according to observation of other LoRa Trackers
   */
-  int state = radio1.begin(freq, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 8);
+  int state = radio1.begin(Config.lora.frequencyTx, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power, 8);
   if (state == RADIOLIB_ERR_NONE) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "init complete!");
   } else {

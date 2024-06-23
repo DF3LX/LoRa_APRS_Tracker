@@ -27,7 +27,7 @@
 	},
 	"lora": {
 		"frequency_rx": 433.775,
-		"frequency_tx": 433.775000,
+		"frequency_tx": 433.775,
 		"power": 20,
 		"spreading_factor": 12,
 		"signal_bandwidth": 125000,
