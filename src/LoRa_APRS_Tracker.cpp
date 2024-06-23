@@ -1,6 +1,7 @@
 #include <APRS-Decoder.h>
 #include <Arduino.h>
 #include <LoRa.h>
+#include <RadioLib.h>
 #include <OneButton.h>
 #include <TimeLib.h>
 #include <TinyGPS++.h>
@@ -401,6 +402,15 @@ void load_config() {
 }
 
 void setup_lora() {
+  SX1262 radio1 = new Module(10, 2, 3, 9);
+  int state = radio1.begin();
+  if (state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("success!"));
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
+  }
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set LoRa pins!");

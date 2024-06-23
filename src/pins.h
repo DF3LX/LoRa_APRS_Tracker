@@ -38,7 +38,7 @@
 #define LORA_MISO      13
 #define LORA_MOSI      11
 #define LORA_CS        10
-#define RADIO_DIO0_PIN 1
+#define RADIO_DIO0_PIN -1
 #define LORA_RST       5
 #define LORA_IRQ       1
 #define RADIO_BUSY_PIN 4
