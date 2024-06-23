@@ -419,10 +419,7 @@ void setup_lora() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
 
-  float freq = Config.lora.frequencyTx;
-  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
-  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
-
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", Config.lora.frequencyTx);
   /*
   * sync word and preamble according to observation of other LoRa Trackers
   */
