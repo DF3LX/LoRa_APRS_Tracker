@@ -37,6 +37,7 @@ TinyGPSPlus    gps;
 void setup_gps();
 void load_config();
 void setup_lora();
+void setup_board();
 
 String create_lat_aprs(RawDegrees lat);
 String create_long_aprs(RawDegrees lng);
@@ -49,7 +50,6 @@ String getSmartBeaconState();
 String padding(unsigned int number, unsigned int width);
 
 static bool send_update          = true;
-static bool display_toggle_value = true;
 
 // RadioLib stuff
 
@@ -62,14 +62,6 @@ static void handle_tx_click() {
 static void handle_next_beacon() {
   BeaconMan.loadNextBeacon();
   show_display(BeaconMan.getCurrentBeaconConfig()->callsign, BeaconMan.getCurrentBeaconConfig()->message, 2000);
-}
-
-static void toggle_display() {
-  display_toggle_value = !display_toggle_value;
-  display_toggle(display_toggle_value);
-  if (display_toggle_value) {
-    setup_display();
-  }
 }
 
 // cppcheck-suppress unusedFunction
@@ -97,6 +89,7 @@ void setup() {
   show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
   load_config();
 
+  setup_board();
   setup_gps();
   setup_lora();
 
@@ -117,8 +110,6 @@ void setup() {
   if (Config.button.alt_message) {
     userButton.attachLongPressStart(handle_next_beacon);
   }
-  userButton.attachDoubleClick(toggle_display);
-
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Smart Beacon is: %s", getSmartBeaconState());
   show_display("INFO", "Smart Beacon is " + getSmartBeaconState(), 1000);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "setup done...");
@@ -415,9 +406,17 @@ void load_config() {
   }
 }
 
+void setup_board() {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "BOARD", "setup starting...");
+    Wire.begin(I2C_SDA, I2C_SCL); // OLED, RTC, BME280
+    Wire1.begin(I2C1_SDA, I2C1_SCL); // PMU AXP2101
+
+    
+}
+
 void setup_lora() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
-  SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
+  SPI.begin(RADIO_SCLK_PIN, RADIO_MISO_PIN, RADIO_MOSI_PIN, RADIO_CS_PIN);
 
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", Config.lora.frequencyTx);
 
@@ -440,7 +439,7 @@ void setup_lora() {
 }
 
 void setup_gps() {
-  ss.begin(9600, 134217756, 9, 8);
+  ss.begin(9600, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
 }
 
 char *s_min_nn(uint32_t min_nnnnn, int high_precision) {
