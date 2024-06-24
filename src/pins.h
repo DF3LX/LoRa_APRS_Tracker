@@ -33,7 +33,7 @@
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
-#define OLED_RESET -1
+#define OLED_RESET 16
 
 #define I2C1_SDA                    42
 #define I2C1_SCL                    41
