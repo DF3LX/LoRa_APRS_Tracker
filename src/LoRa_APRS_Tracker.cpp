@@ -13,6 +13,7 @@
 #include "display.h"
 #include "pins.h"
 #include "power_management.h"
+#include "board.h"
 
 #define VERSION "23.36.01"
 
@@ -31,13 +32,10 @@ PowerManagement *powerManagement = &axp;
 #endif
 OneButton userButton = OneButton(BUTTON_PIN, true, true);
 
-HardwareSerial ss(1);
 TinyGPSPlus    gps;
 
-void setup_gps();
 void load_config();
 void setup_lora();
-void setup_board();
 
 String create_lat_aprs(RawDegrees lat);
 String create_long_aprs(RawDegrees lng);
@@ -66,7 +64,9 @@ static void handle_next_beacon() {
 
 // cppcheck-suppress unusedFunction
 void setup() {
-  Serial.begin(115200);
+  setupBoard();
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "test", "test");
+  setup_lora();
 
 #if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
   Wire.begin(SDA, SCL);
@@ -89,8 +89,7 @@ void setup() {
   show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
   load_config();
 
-  setup_board();
-  setup_gps();
+  setupBoard();
   setup_lora();
 
   if (Config.ptt.active) {
@@ -127,8 +126,8 @@ void loop() {
       gps.encode(c);
     }
   } else {
-    while (ss.available() > 0) {
-      char c = ss.read();
+    while (SerialGPS.available() > 0) {
+      char c = SerialGPS.read();
       // Serial.print(c);
       gps.encode(c);
     }
@@ -436,10 +435,6 @@ void setup_lora() {
 
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "LoRa init done!");
   show_display("INFO", "LoRa init done!", 2000);
-}
-
-void setup_gps() {
-  ss.begin(9600, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
 }
 
 char *s_min_nn(uint32_t min_nnnnn, int high_precision) {
