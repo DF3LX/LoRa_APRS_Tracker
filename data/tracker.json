@@ -2,9 +2,9 @@
 	"debug": false,
 	"beacons": [
 		{
-			"callsign": "NOCALL-7",
+			"callsign": "DF3LX-7",
 			"path": "WIDE1-1",
-			"message": "LoRa Tracker",
+			"message": "TTGO Supreme",
 			"timeout": 1,
 			"symbol": "[",
 			"overlay": "/",

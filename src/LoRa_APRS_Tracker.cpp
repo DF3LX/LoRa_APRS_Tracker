@@ -85,6 +85,19 @@ void setup() {
   powerManagement->activateMeasurement();
 #endif
 
+#if defined(T_BEAM_S3_SUPREME)
+  Wire.begin(I2C1_SDA, I2C1_SCL);
+  if (powerManagement->begin(Wire)) {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "PMU", "init done!");
+  } else {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "PMU", "init failed!");
+  }
+  powerManagement->activateLoRa();
+  powerManagement->activateOLED();
+  powerManagement->activateGPS();
+  powerManagement->activateMeasurement();
+#endif
+
   delay(500);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "LoRa APRS Tracker by OE5BPA (Peter Buchegger)");
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Version: " VERSION);

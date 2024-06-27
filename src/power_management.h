@@ -9,7 +9,7 @@ public:
   ~PowerManagement() {
   }
 
-  virtual bool begin(TwoWire PMU_WIRE_PORT) = 0;
+  virtual bool begin(TwoWire &port) = 0;
 
   virtual void activateLoRa()   = 0;
   virtual void deactivateLoRa() = 0;
