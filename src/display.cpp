@@ -18,7 +18,7 @@ void setup_display() {
   delay(20);
   digitalWrite(OLED_RST, HIGH);
 
-  Wire.begin(OLED_SDA, OLED_SCL);
+  Wire.begin(I2C_SDA, I2C_SCL);
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3c, false, false)) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SSD1306", "allocation failed!");
     while (true) {
