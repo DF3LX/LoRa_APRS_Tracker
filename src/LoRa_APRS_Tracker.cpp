@@ -6,6 +6,7 @@
 #include <TinyGPS++.h>
 #include <WiFi.h>
 #include <logger.h>
+// #include <RadioLib.h>
 
 #include "BeaconManager.h"
 #include "configuration.h"
@@ -24,7 +25,7 @@ BeaconManager BeaconMan;
 AXP192           axp;
 PowerManagement *powerManagement = &axp;
 #endif
-#ifdef TTGO_T_Beam_V1_2
+#if defined(TTGO_T_Beam_V1_2) || defined(T_BEAM_S3_SUPREME)
 AXP2101          axp;
 PowerManagement *powerManagement = &axp;
 #endif
