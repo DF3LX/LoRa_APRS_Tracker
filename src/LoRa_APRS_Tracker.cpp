@@ -74,7 +74,6 @@ static void toggle_display() {
 // cppcheck-suppress unusedFunction
 void setup() {
   Serial.begin(115200);
-  while (!Serial);
   delay(500);
 #if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
   Wire.begin(SDA, SCL);
