@@ -6,7 +6,7 @@
 #include <TinyGPS++.h>
 #include <WiFi.h>
 #include <logger.h>
-// #include <RadioLib.h>
+#include <RadioLib.h>
 
 #include "BeaconManager.h"
 #include "configuration.h"
@@ -71,7 +71,8 @@ static void toggle_display() {
 // cppcheck-suppress unusedFunction
 void setup() {
   Serial.begin(115200);
-
+  while (!Serial);
+  delay(5000);
 #if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
   Wire.begin(SDA, SCL);
   if (powerManagement->begin(Wire)) {
@@ -98,13 +99,17 @@ void setup() {
   powerManagement->activateMeasurement();
 #endif
 
-  delay(500);
+  delay(5000);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "LoRa APRS Tracker by OE5BPA (Peter Buchegger)");
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Version: " VERSION);
+
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Set up OLED!");
   setup_display();
 
   show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
   load_config();
+
+  ICACHE_RAM_ATTR
 
   setup_gps();
   setup_lora();
@@ -421,6 +426,17 @@ void setup_lora() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set LoRa pins!");
+  #if defined(USING_SX1262)
+  SX1262 radio1 = new Module(LORA_CS, LORA_DIO1, LORA_RST, LORA_BUSY);
+  int state = radio1.begin();
+    if (state == RADIOLIB_ERR_NONE) {
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "RadioLib begin success!");
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
+  }
+  #endif
   LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
 
   long freq = Config.lora.frequencyTx;
@@ -442,6 +458,7 @@ void setup_lora() {
 }
 
 void setup_gps() {
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "GPS", "Start GPS serial connection!");
   ss.begin(9600, SERIAL_8N1, GPS_TX_PIN, GPS_RX_PIN);
 }
 
