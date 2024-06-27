@@ -437,7 +437,9 @@ void setup_lora() {
     while (true);
   }
   #endif
+  #if !defined(USING_SX1262)
   LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
+  #endif
 
   long freq = Config.lora.frequencyTx;
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
