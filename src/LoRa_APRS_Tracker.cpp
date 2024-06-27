@@ -75,7 +75,7 @@ static void toggle_display() {
 void setup() {
   Serial.begin(115200);
   while (!Serial);
-  delay(5000);
+  delay(500);
 #if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
   Wire.begin(SDA, SCL);
   if (powerManagement->begin(Wire)) {
@@ -102,7 +102,7 @@ void setup() {
   powerManagement->activateMeasurement();
 #endif
 
-  delay(5000);
+  delay(500);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "LoRa APRS Tracker by OE5BPA (Peter Buchegger)");
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Version: " VERSION);
 
@@ -458,7 +458,11 @@ void setup_lora() {
   #if defined(USING_SX1262)
   long freq = Config.lora.frequencyTx;
   float freq_mhz = freq / 1000000;
-  int state = radio1.begin(freq_mhz, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power);
+
+  long bw = Config.lora.signalBandwidth;
+  float bw_khz = bw / 1000;
+
+  int state = radio1.begin(freq_mhz, bw_khz, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power);
     if (state == RADIOLIB_ERR_NONE) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "RadioLib begin success!");
   } else {
