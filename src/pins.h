@@ -13,13 +13,13 @@
 #define BUTTON_PIN 38 // The middle button GPIO on the T-Beam
 
 #ifdef TTGO_T_Beam_V0_7
-#define GPS_RX_PIN 15
-#define GPS_TX_PIN 12
+#define GPS_RX 15
+#define GPS_TX 12
 #endif
 
 #if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
-#define GPS_RX_PIN 12
-#define GPS_TX_PIN 34
+#define GPS_RX 12
+#define GPS_TX 34
 #endif
 
 #endif
@@ -41,10 +41,10 @@
 #define I2C1_SCL                    41
 #define PMU_IRQ                     40
 
-#define GPS_RX_PIN                  9
-#define GPS_TX_PIN                  8
+#define GPS_RX                      9
+#define GPS_TX                      8
 #define GPS_WAKEUP_PIN              7
-#define GPS_PPS_PIN                6
+#define GPS_PPS_PIN                 6
 
 #define BUTTON_PIN                  0
 #define BUTTON_PIN_MASK             GPIO_SEL_0
