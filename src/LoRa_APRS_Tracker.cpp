@@ -31,6 +31,9 @@ PowerManagement *powerManagement = &axp;
 #endif
 OneButton userButton = OneButton(BUTTON_PIN, true, true);
 
+#if defined(USING_SX1262)
+  SX1262 radio1 = new Module(LORA_CS, LORA_DIO1, LORA_RST, LORA_BUSY);
+#endif
 HardwareSerial ss(1);
 TinyGPSPlus    gps;
 
@@ -204,7 +207,7 @@ void loop() {
   static bool   BatteryIsConnected   = false;
   static String batteryVoltage       = "";
   static String batteryChargeCurrent = "";
-#if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2)
+#if defined(TTGO_T_Beam_V1_0) || defined(TTGO_T_Beam_V1_2) || defined(T_BEAM_S3_SUPREME)
   static unsigned int rate_limit_check_battery = 0;
   if (!(rate_limit_check_battery++ % 60)) {
     BatteryIsConnected = powerManagement->isBatteryConnect();
@@ -327,7 +330,31 @@ void loop() {
       digitalWrite(Config.ptt.io_pin, Config.ptt.reverse ? LOW : HIGH);
       delay(Config.ptt.start_delay);
     }
+  #if defined(USING_SX1262)
+    // Header:
+    byte byteArr[] = {0x3C, 0xFF, 0x01}; // < = 0x3C
+    int initialSize = sizeof(byteArr) / sizeof(byteArr[0]);
 
+    int totalSize = initialSize + data.length();
+
+    byte combinedArr[totalSize];
+    memcpy(combinedArr, byteArr, initialSize);
+
+    for (int i = 0; i < data.length(); i++) {
+        combinedArr[initialSize + i] = data[i];
+    }
+
+    // Display the combined array (optional, for debugging)
+    Serial.print("Combined array: ");
+    for (int i = 0; i < totalSize; i++) {
+        Serial.print(combinedArr[i], HEX);
+        Serial.print(" ");
+    }
+
+    radio1.transmit(combinedArr, totalSize);
+  #endif
+  
+  #if !defined(USING_SX1262)
     LoRa.beginPacket();
     // Header:
     LoRa.write('<');
@@ -336,6 +363,7 @@ void loop() {
     // APRS Data:
     LoRa.write((const uint8_t *)data.c_str(), data.length());
     LoRa.endPacket();
+  #endif
 
     if (BeaconMan.getCurrentBeaconConfig()->smart_beacon.active) {
       lastTxLat       = gps.location.lat();
@@ -426,35 +454,39 @@ void setup_lora() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set SPI pins!");
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_CS);
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "Set LoRa pins!");
+
   #if defined(USING_SX1262)
-  SX1262 radio1 = new Module(LORA_CS, LORA_DIO1, LORA_RST, LORA_BUSY);
-  int state = radio1.begin();
+  long freq = Config.lora.frequencyTx;
+  float freq_mhz = freq / 1000000;
+  int state = radio1.begin(freq_mhz, Config.lora.signalBandwidth, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power);
     if (state == RADIOLIB_ERR_NONE) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "RadioLib begin success!");
   } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "RadioLib error: %d", state);
     while (true);
   }
   #endif
+
+
   #if !defined(USING_SX1262)
   LoRa.setPins(LORA_CS, LORA_RST, LORA_IRQ);
-  #endif
 
   long freq = Config.lora.frequencyTx;
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d", freq);
   if (!LoRa.begin(freq)) {
-    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "LoRa", "Starting LoRa failed!");
+    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "LoRa", "LoRa.h Starting LoRa failed!");
     show_display("ERROR", "Starting LoRa failed!");
     while (true) {
     }
   }
+
   LoRa.setSpreadingFactor(Config.lora.spreadingFactor);
   LoRa.setSignalBandwidth(Config.lora.signalBandwidth);
   LoRa.setCodingRate4(Config.lora.codingRate4);
   LoRa.enableCrc();
-
   LoRa.setTxPower(Config.lora.power);
+  #endif
+
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "LoRa init done!");
   show_display("INFO", "LoRa init done!", 2000);
 }
