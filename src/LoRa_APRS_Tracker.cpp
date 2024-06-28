@@ -456,10 +456,17 @@ void setup_lora() {
 
   #if defined(USING_SX1262)
   long freq = Config.lora.frequencyTx;
-  float freq_mhz = freq / 1000000;
-
+  long freq_f = freq;
+  float freq_mhz = freq_f / 1000000;
+  
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d Hz", freq);
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "frequency: %d MHz", freq_mhz);
   long bw = Config.lora.signalBandwidth;
-  float bw_khz = bw / 1000;
+  float bw_f = bw;
+  float bw_khz = bw_f / 1000;
+ 
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "bandwidth: %d kHz", bw_khz);
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "LoRa", "bandwidth: %d Hz", bw);
 
   int state = radio1.begin(freq_mhz, bw_khz, Config.lora.spreadingFactor, Config.lora.codingRate4, 0x12, Config.lora.power);
     if (state == RADIOLIB_ERR_NONE) {
