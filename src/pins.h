@@ -26,6 +26,9 @@
 
 #if defined(T_BEAM_S3_SUPREME)
 
+#ifndef USING_SH1106
+#define USING_SH1106
+#endif
 
 #ifndef USING_SX1262
 #define USING_SX1262
