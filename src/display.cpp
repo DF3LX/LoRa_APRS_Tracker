@@ -49,7 +49,7 @@ void setup_display() {
 
   #if defined(USING_SH1106)
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "ini...");
-  if (!display.begin(0x3c, true)) {
+  if (!display.begin(0x3C, true)) {
     logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "init failed!");
     while (true) {
     }

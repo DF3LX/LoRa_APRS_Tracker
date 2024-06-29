@@ -105,7 +105,7 @@ void setup() {
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "LoRa APRS Tracker by OE5BPA (Peter Buchegger)");
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Version: " VERSION);
 
-  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Set up OLED!");
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "Main", "Setting up OLED!");
   setup_display();
 
   show_display("OE5BPA", "LoRa APRS Tracker", "by Peter Buchegger", "Version: " VERSION, 2000);
