@@ -1,4 +1,3 @@
-
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_SH110X.h>
@@ -18,7 +17,6 @@ Adafruit_SSD1306 display(128, 64, &Wire, OLED_RST);
 Adafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);
 # endif
 
-// cppcheck-suppress unusedFunction
 void setup_display() {
   if (OLED_RST != -1) {
     pinMode(OLED_RST, OUTPUT);
@@ -27,13 +25,9 @@ void setup_display() {
     digitalWrite(OLED_RST, HIGH);
   }
 
-  Wire.begin(I2C_SDA, I2C_SCL);
-  delay(50);
   #if !defined(USING_SX1262)
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3c, false, false)) {
-    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SSD1306", "allocation failed!");
-    while (true) {
-    }
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SSD1306", "allocation failed!");
   }
 
   display.clearDisplay();
@@ -48,11 +42,11 @@ void setup_display() {
   #endif
 
   #if defined(USING_SH1106)
-  logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "ini...");
-  if (!display.begin(0x3C, true)) {
-    logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "init failed!");
-    while (true) {
-    }
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "ini...");
+  delay(2000);
+  if (!display.begin(0x3c, false)) {
+
+   logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "init failed!");
   }
 
   display.clearDisplay();
