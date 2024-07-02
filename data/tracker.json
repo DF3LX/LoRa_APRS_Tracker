@@ -4,18 +4,18 @@
 		{
 			"callsign": "DF3LX-7",
 			"path": "WIDE1-1",
-			"message": "TTGO Supreme",
+			"message": "custom Firmware",
 			"timeout": 1,
 			"symbol": "[",
 			"overlay": "/",
 			"smart_beacon": {
 				"active": true,
-				"turn_min": 1,
-				"slow_rate": 1,
-				"slow_speed": 1,
-				"fast_rate": 1,
+				"turn_min": 25,
+				"slow_rate": 300,
+				"slow_speed": 10,
+				"fast_rate": 60,
 				"fast_speed": 100,
-				"min_tx_dist": 0,
+				"min_tx_dist": 100,
 				"min_bcn": 5
 			},
 			"enhance_precision": true
