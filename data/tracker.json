@@ -10,12 +10,12 @@
 			"overlay": "/",
 			"smart_beacon": {
 				"active": true,
-				"turn_min": 25,
-				"slow_rate": 300,
-				"slow_speed": 10,
-				"fast_rate": 60,
+				"turn_min": 1,
+				"slow_rate": 1,
+				"slow_speed": 1,
+				"fast_rate": 1,
 				"fast_speed": 100,
-				"min_tx_dist": 100,
+				"min_tx_dist": 0,
 				"min_bcn": 5
 			},
 			"enhance_precision": true
@@ -28,7 +28,7 @@
 	"lora": {
 		"frequency_rx": 433775000,
 		"frequency_tx": 433775000,
-		"power": 2,
+		"power": 22,
 		"spreading_factor": 12,
 		"signal_bandwidth": 125000,
 		"coding_rate4": 5

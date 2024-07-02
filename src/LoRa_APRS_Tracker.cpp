@@ -71,7 +71,6 @@ static void toggle_display() {
   }
 }
 
-// cppcheck-suppress unusedFunction
 void setup() {
   Serial.begin(115200);
   delay(5000);
@@ -146,10 +145,8 @@ void setup() {
   delay(500);
 }
 
-// cppcheck-suppress unusedFunction
 void loop() {
   userButton.tick();
-
   if (Config.debug) {
     while (Serial.available() > 0) {
       char c = Serial.read();
@@ -335,27 +332,8 @@ void loop() {
       delay(Config.ptt.start_delay);
     }
   #if defined(USING_SX1262)
-    // Header:
-    byte byteArr[] = {0x3C, 0xFF, 0x01}; // < = 0x3C
-    int initialSize = sizeof(byteArr) / sizeof(byteArr[0]);
-
-    int totalSize = initialSize + data.length();
-
-    byte combinedArr[totalSize];
-    memcpy(combinedArr, byteArr, initialSize);
-
-    for (int i = 0; i < data.length(); i++) {
-        combinedArr[initialSize + i] = data[i];
-    }
-
-    // Display the combined array (optional, for debugging)
-    Serial.print("Combined array: ");
-    for (int i = 0; i < totalSize; i++) {
-        Serial.print(combinedArr[i], HEX);
-        Serial.print(" ");
-    }
-
-    radio1.transmit(combinedArr, totalSize);
+    Serial.println("\x3c\xff\x01" + data);
+    radio1.transmit("\x3c\xff\x01" + data);
   #endif
   
   #if !defined(USING_SX1262)

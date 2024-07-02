@@ -59,7 +59,7 @@ void setup_display() {
 
 }
 
-// cppcheck-suppress unusedFunction
+
 void display_toggle(bool toggle) {
   #if !defined(USING_SH1106)
   if (toggle) {
@@ -79,7 +79,7 @@ void display_toggle(bool toggle) {
   #endif
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -94,7 +94,7 @@ void show_display(String header, int wait) {
   delay(wait);
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, String line1, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -112,7 +112,7 @@ void show_display(String header, String line1, int wait) {
   delay(wait);
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, String line1, String line2, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -132,7 +132,7 @@ void show_display(String header, String line1, String line2, int wait) {
   delay(wait);
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, String line1, String line2, String line3, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -154,7 +154,7 @@ void show_display(String header, String line1, String line2, String line3, int w
   delay(wait);
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, String line1, String line2, String line3, String line4, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -178,7 +178,7 @@ void show_display(String header, String line1, String line2, String line3, Strin
   delay(wait);
 }
 
-// cppcheck-suppress unusedFunction
+
 void show_display(String header, String line1, String line2, String line3, String line4, String line5, int wait) {
   display.clearDisplay();
   display.setTextColor(WHITE);

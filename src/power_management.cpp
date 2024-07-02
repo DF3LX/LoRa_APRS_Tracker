@@ -6,7 +6,7 @@
 AXP192::AXP192() {
 }
 
-// cppcheck-suppress unusedFunction
+
 bool AXP192::begin(TwoWire &port) {
   _pmu = new XPowersAXP192(port);
   if (!_pmu->init()) {
@@ -48,52 +48,52 @@ bool AXP192::begin(TwoWire &port) {
   return true;
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::activateLoRa() {
   _pmu->enablePowerOutput(XPOWERS_LDO2);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::deactivateLoRa() {
   _pmu->disablePowerOutput(XPOWERS_LDO2);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::activateGPS() {
   _pmu->enablePowerOutput(XPOWERS_LDO3);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::deactivateGPS() {
   _pmu->disablePowerOutput(XPOWERS_LDO3);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::activateOLED() {
   _pmu->enablePowerOutput(XPOWERS_DCDC1);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::deactivateOLED() {
   _pmu->disablePowerOutput(XPOWERS_DCDC1);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::activateMeasurement() {
   _pmu->enableBattVoltageMeasure();
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP192::deactivateMeasurement() {
   _pmu->disableBattVoltageMeasure();
 }
 
-// cppcheck-suppress unusedFunction
+
 double AXP192::getBatteryVoltage() {
   return _pmu->getBattVoltage() / 1000.0;
 }
 
-// cppcheck-suppress unusedFunction
+
 double AXP192::getBatteryChargeDischargeCurrent() {
   if (isCharging()) {
     return ((XPowersAXP192 *)_pmu)->getBatteryChargeCurrent();
@@ -112,7 +112,7 @@ bool AXP192::isCharging() {
 AXP2101::AXP2101() {
 }
 
-// cppcheck-suppress unusedFunction
+
 bool AXP2101::begin(TwoWire &port) {
   _pmu = new XPowersAXP2101(port);
   if (!_pmu->init()) {
@@ -202,52 +202,52 @@ bool AXP2101::begin(TwoWire &port) {
   return true;
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::activateLoRa() {
   _pmu->enablePowerOutput(XPOWERS_ALDO2);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::deactivateLoRa() {
   _pmu->disablePowerOutput(XPOWERS_ALDO2);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::activateGPS() {
   _pmu->enablePowerOutput(XPOWERS_ALDO3);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::deactivateGPS() {
   _pmu->disablePowerOutput(XPOWERS_ALDO3);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::activateOLED() {
   _pmu->enablePowerOutput(XPOWERS_DCDC1);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::deactivateOLED() {
   _pmu->disablePowerOutput(XPOWERS_DCDC1);
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::activateMeasurement() {
   _pmu->enableBattVoltageMeasure();
 }
 
-// cppcheck-suppress unusedFunction
+
 void AXP2101::deactivateMeasurement() {
   _pmu->disableBattVoltageMeasure();
 }
 
-// cppcheck-suppress unusedFunction
+
 double AXP2101::getBatteryVoltage() {
   return _pmu->getBattVoltage() / 1000.0;
 }
 
-// cppcheck-suppress unusedFunction
+
 double AXP2101::getBatteryChargeDischargeCurrent() {
   return 0.0;
 }

@@ -19,7 +19,7 @@ ConfigurationManagement::ConfigurationManagement(String FilePath) : mFilePath(Fi
   }
 }
 
-// cppcheck-suppress unusedFunction
+
 Configuration ConfigurationManagement::readConfiguration() {
   File file = SPIFFS.open(mFilePath);
   if (!file) {
@@ -87,7 +87,7 @@ Configuration ConfigurationManagement::readConfiguration() {
   return conf;
 }
 
-// cppcheck-suppress unusedFunction
+
 void ConfigurationManagement::writeConfiguration(Configuration conf) {
   File file = SPIFFS.open(mFilePath, "w");
   if (!file) {
