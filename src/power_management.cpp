@@ -196,7 +196,7 @@ bool AXP2101::begin(TwoWire &port) {
   // Set charge cut-off voltage
   _pmu->setChargeTargetVoltage(XPOWERS_AXP2101_CHG_VOL_4V2); 
   // Set charging LED mode
-  _pmu->setChargingLedMode(XPOWERS_CHG_LED_BLINK_1HZ);
+  _pmu->setChargingLedMode(XPOWERS_CHG_LED_CTRL_CHG);
 #endif
 
   return true;
