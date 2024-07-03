@@ -1,6 +1,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <Adafruit_SH110X.h>
+#include <Wire.h>
+#include <U8g2lib.h>
 #include <Wire.h>
 #include <logger.h>
 
@@ -43,18 +44,24 @@ void setup_display() {
 
   #if defined(USING_SH1106)
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "ini...");
-  delay(2000);
-  if (!display.begin(0x3c, false)) {
-
-   logger.log(logging::LoggerLevel::LOGGER_LEVEL_ERROR, "SX1106", "init failed!");
-  }
-
-  display.clearDisplay();
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0, 0);
-  display.print("LORA SENDER ");
-  display.display();
+ Wire.beginTransmission(0x3C);
+    if (Wire.endTransmission() == 0) {
+        Serial.printf("Find Display model at 0x3C address\n");
+        u8g2 = new DISPLAY_MODEL(U8G2_R0, U8X8_PIN_NONE);
+        u8g2->begin();
+        u8g2->clearBuffer();
+        u8g2->setFont(u8g2_font_inb19_mr);
+        u8g2->drawStr(0, 30, "DF3LX-7");
+        u8g2->drawHLine(2, 35, 47);
+        u8g2->drawHLine(3, 36, 47);
+        u8g2->drawVLine(45, 32, 12);
+        u8g2->drawVLine(46, 33, 12);
+        u8g2->setFont(u8g2_font_inb19_mf);
+        u8g2->drawStr(58, 60, "LoRa");
+        u8g2->sendBuffer();
+        u8g2->setFont(u8g2_font_fur11_tf);
+        delay(3000);
+    }
   #endif
 
 }
@@ -71,10 +78,7 @@ void display_toggle(bool toggle) {
 
   #if defined(USING_SH1106)
   if (toggle) {
-    display.oled_command(SH110X_DISPLAYOFF);
-    display.oled_command(SH110X_DISPLAYON);
-  } else {
-    display.oled_command(SH110X_DISPLAYOFF);
+
   }
   #endif
 }
@@ -96,6 +100,7 @@ void show_display(String header, int wait) {
 
 
 void show_display(String header, String line1, int wait) {
+  #if !defined(USING_SH1106)
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -104,16 +109,26 @@ void show_display(String header, String line1, int wait) {
   display.setTextSize(1);
   display.setCursor(0, 16);
   display.println(line1);
-  #if !defined(USING_SH1106)
+  display.setCursor(0, 26);
   display.ssd1306_command(SSD1306_SETCONTRAST);
   display.ssd1306_command(1);
-  #endif
   display.display();
+  #endif
+
+  #if defined(USING_SH1106)
+  u8g2->clearBuffer();
+  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->drawStr(0, 0, header);
+  u8g2->setFont(u8g2_font_fub25_tn);
+  u8g2->drawStr(0, 16, line1);
+  u8g2->sendBuffer();
+  #endif
   delay(wait);
 }
 
 
 void show_display(String header, String line1, String line2, int wait) {
+  #if !defined(USING_SH1106)
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -124,16 +139,27 @@ void show_display(String header, String line1, String line2, int wait) {
   display.println(line1);
   display.setCursor(0, 26);
   display.println(line2);
-  #if !defined(USING_SH1106)
+  display.setCursor(0, 36);
   display.ssd1306_command(SSD1306_SETCONTRAST);
   display.ssd1306_command(1);
-  #endif
   display.display();
+  #endif
+
+  #if defined(USING_SH1106)
+  u8g2->clearBuffer();
+  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->drawStr(0, 0, header);
+  u8g2->setFont(u8g2_font_fub25_tn);
+  u8g2->drawStr(0, 16, line1);
+  u8g2->drawStr(0, 26, line2);
+  u8g2->sendBuffer();
+  #endif
   delay(wait);
 }
 
 
 void show_display(String header, String line1, String line2, String line3, int wait) {
+  #if !defined(USING_SH1106)
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -146,16 +172,27 @@ void show_display(String header, String line1, String line2, String line3, int w
   display.println(line2);
   display.setCursor(0, 36);
   display.println(line3);
-  #if !defined(USING_SH1106)
   display.ssd1306_command(SSD1306_SETCONTRAST);
   display.ssd1306_command(1);
-  #endif
   display.display();
+  #endif
+
+  #if defined(USING_SH1106)
+  u8g2->clearBuffer();
+  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->drawStr(0, 0, header);
+  u8g2->setFont(u8g2_font_fub25_tn);
+  u8g2->drawStr(0, 16, line1);
+  u8g2->drawStr(0, 26, line2);
+  u8g2->drawStr(0, 36, line3);
+  u8g2->sendBuffer();
+  #endif
   delay(wait);
 }
 
 
 void show_display(String header, String line1, String line2, String line3, String line4, int wait) {
+  #if !defined(USING_SH1106)
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -170,16 +207,28 @@ void show_display(String header, String line1, String line2, String line3, Strin
   display.println(line3);
   display.setCursor(0, 46);
   display.println(line4);
-  #if !defined(USING_SH1106)
   display.ssd1306_command(SSD1306_SETCONTRAST);
   display.ssd1306_command(1);
-  #endif
   display.display();
+  #endif
+
+  #if defined(USING_SH1106)
+  u8g2->clearBuffer();
+  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->drawStr(0, 0, header);
+  u8g2->setFont(u8g2_font_fub25_tn);
+  u8g2->drawStr(0, 16, line1);
+  u8g2->drawStr(0, 26, line2);
+  u8g2->drawStr(0, 36, line3);
+  u8g2->drawStr(0, 46, line4);
+  u8g2->sendBuffer();
+  #endif
   delay(wait);
 }
 
 
 void show_display(String header, String line1, String line2, String line3, String line4, String line5, int wait) {
+  #if !defined(USING_SH1106)
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -196,10 +245,22 @@ void show_display(String header, String line1, String line2, String line3, Strin
   display.println(line4);
   display.setCursor(0, 56);
   display.println(line5);
-  #if !defined(USING_SH1106)
   display.ssd1306_command(SSD1306_SETCONTRAST);
   display.ssd1306_command(1);
-  #endif
   display.display();
+  #endif
+
+  #if defined(USING_SH1106)
+  u8g2->clearBuffer();
+  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->drawStr(0, 0, header);
+  u8g2->setFont(u8g2_font_fub25_tn);
+  u8g2->drawStr(0, 16, line1);
+  u8g2->drawStr(0, 26, line2);
+  u8g2->drawStr(0, 36, line3);
+  u8g2->drawStr(0, 46, line4);
+  u8g2->drawStr(0, 56, line5);
+  u8g2->sendBuffer();
+  #endif
   delay(wait);
 }
