@@ -54,11 +54,20 @@ void setup_display() {
 
   try
   {
+    Wire.endTransmission(0x3C);
+  }
+  catch(const std::exception& e)
+  {
+    Serial.println("Wire.endTransmission failed.");
+  }
+
+  try
+  {
     Wire.beginTransmission(0x3C);
   }
   catch(const std::exception& e)
   {
-    std::cerr << e.what() << '\n';
+    Serial.println("Wire.beginTransmission failed. Check connections!");
   }
 
   if (Wire.endTransmission() == 0) {
