@@ -45,6 +45,7 @@ void setup_display() {
   #if defined(USING_SH1106)
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "ini...");
   u8g2.begin();
+  delay(300);
   u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_inb19_mr);
   u8g2.drawStr(0, 30, "DF3LX-7");
@@ -56,7 +57,7 @@ void setup_display() {
   u8g2.drawStr(58, 60, "LoRa");
   u8g2.sendBuffer();
   u8g2.setFont(u8g2_font_fur11_tf);
-  delay(3000);
+  delay(300);
   #endif
 
 }
@@ -93,6 +94,7 @@ void show_display(String header, int wait) {
   u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_NokiaLargeBold_tf );
   u8g2.drawStr(0, 0, header.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
@@ -121,6 +123,7 @@ void show_display(String header, String line1, int wait) {
   u8g2.drawStr(0, 0, header.c_str());
   u8g2.setFont(u8g2_font_fub25_tn);
   u8g2.drawStr(0, 16, line1.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
@@ -152,6 +155,7 @@ void show_display(String header, String line1, String line2, int wait) {
   u8g2.setFont(u8g2_font_fub25_tn);
   u8g2.drawStr(0, 16, line1.c_str());
   u8g2.drawStr(0, 26, line2.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
@@ -185,6 +189,7 @@ void show_display(String header, String line1, String line2, String line3, int w
   u8g2.drawStr(0, 16, line1.c_str());
   u8g2.drawStr(0, 26, line2.c_str());
   u8g2.drawStr(0, 36, line3.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
@@ -221,6 +226,7 @@ void show_display(String header, String line1, String line2, String line3, Strin
   u8g2.drawStr(0, 26, line2.c_str());
   u8g2.drawStr(0, 36, line3.c_str());
   u8g2.drawStr(0, 46, line4.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
@@ -260,6 +266,7 @@ void show_display(String header, String line1, String line2, String line3, Strin
   u8g2.drawStr(0, 36, line3.c_str());
   u8g2.drawStr(0, 46, line4.c_str());
   u8g2.drawStr(0, 56, line5.c_str());
+  logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2.sendBuffer();
   #endif
   delay(wait);
