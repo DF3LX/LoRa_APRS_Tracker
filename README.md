@@ -3,6 +3,9 @@
 The LoRa APRS Tracker will work with very cheep hardware which you can buy from amazon, ebay or aliexpress.
 Try it out and be part of the APRS network.
 
+This fork has the intention of beeing "mergable" into the main project.
+The development currently takes places during the [hackclub](https://hackclub.com/) [arcade](https://hackclub.com/arcade/) event.
+
 ![TTGO T-Beam](pics/Tracker.png)
 
 ## Supported boards
