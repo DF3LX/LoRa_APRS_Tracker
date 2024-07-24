@@ -52,14 +52,7 @@ void setup_display() {
     Serial.println("Wire initialization succeeded.");
   }
 
-  try
-  {
-    Wire.endTransmission(0x3C);
-  }
-  catch(const std::exception& e)
-  {
-    Serial.println("Wire.endTransmission failed.");
-  }
+Serial.println("Wire.beginTransmission...");
 
   try
   {
@@ -69,6 +62,7 @@ void setup_display() {
   {
     Serial.println("Wire.beginTransmission failed. Check connections!");
   }
+Serial.println("was Wire.beginTransmission...");
 
   if (Wire.endTransmission() == 0) {
     Serial.println("conf...");
@@ -121,7 +115,7 @@ void show_display(String header, int wait) {
 
   #if defined(USING_SH1106)
   u8g2->clearBuffer();
-  u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
+  u8g2->setFont(u8g2_font_ncenB08_tr);
   u8g2->drawStr(0, 0, header.c_str());
   logger.log(logging::LoggerLevel::LOGGER_LEVEL_INFO, "SX1106", "refresh...");
   u8g2->sendBuffer();
@@ -211,6 +205,7 @@ void show_display(String header, String line1, String line2, String line3, int w
   #endif
 
   #if defined(USING_SH1106)
+  u8g2->setFont(u8x8_font_chroma48medium8_r);
   u8g2->clearBuffer();
   u8g2->setFont(u8g2_font_NokiaLargeBold_tf );
   u8g2->drawStr(0, 0, header.c_str());
